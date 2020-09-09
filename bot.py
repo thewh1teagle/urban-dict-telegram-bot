@@ -9,19 +9,20 @@ from sys import argv
 
 
 
-def urbandictionary(word: str):
-    result = requests.get("https://www.urbandictionary.com/define.php?term=" + word)
+def urbandictionary(sentence: list):
+    words = sentence.split(" ")
+    print(words)
+    result = requests.get("https://www.urbandictionary.com/define.php?term=" + '+'.join(words))
     if result.status_code != 200:
-        #raise('Not found')
-        print('not found')
+        return "Urban dictionary result: \nNot found!"
     else:
         try:
             soup = BS(result.text, features='html.parser')
             meaning = soup.findAll("div", {"class": "meaning"})
             return meaning[0].text
         except Exception as e:
-            print(e)
-            #raise('not found')
+            print(e) # for debugging
+            return "Urban dictionary result: \nNot found!"
 
 
 
@@ -29,14 +30,10 @@ def urbandictionary(word: str):
 def message_handler(update, context):
     """Send a message when the command /start is issued."""
     message_text = update.message.text
-    if message_text.startswith('.urban') and len(message_text.split()) == 2:
-        text = message_text.split()[1]
-        meaning = urbandictionary(text)
-        if meaning:
-            update.message.reply_text("Urban dictionary result: \n{}".format(meaning))
-        else:
-            update.message.reply_text("Urban dictionary result: \nNot found!")
-        
+    sentence = message_text[ len('.urban ') :]
+    if message_text.startswith('.urban') and len(message_text.split()) >= 2:
+        meaning = urbandictionary(sentence)
+        update.message.reply_text(meaning)
         
         
 
