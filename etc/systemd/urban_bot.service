@@ -1,0 +1,16 @@
+[Unit]
+Description=Urban bot Service
+After=multi-user.target
+
+# Copy this file into /etc/systemd/system and run systemd enable name.service
+
+[Service]
+Type=idle
+WorkingDirectory=/home/pi/Documents/urban-dict-telegram-bot
+Environment="BOT_TOKEN=<Your token>"
+Environment=PYTHONUNBUFFERED=1 # For redirect stdout to file.
+ExecStart=/home/pi/Documents/urban-dict-telegram-bot/venv/bin/python3 bot.py
+StandardOutput=file:/home/pi/Documents/urban-dict-telegram-bot/log
+
+[Install]
+WantedBy=multi-user.target
