@@ -75,7 +75,7 @@ if __name__ == '__main__':
     dp = updater.dispatcher
 
     # on different commands - answer in Telegram
-    dp.add_handler(MessageHandler(filters=Filters.regex('^.urban ') & ~Filters.private, callback=public))
+    dp.add_handler(MessageHandler(filters=Filters.regex('^\.urban ') & ~Filters.private, callback=public))
     dp.add_handler(MessageHandler(filters=Filters.private & ~Filters.regex('^.urban '), callback=private))
 
 
